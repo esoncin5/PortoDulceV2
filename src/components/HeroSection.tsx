@@ -6,7 +6,7 @@ import { MessageCircle, ChevronDown } from "lucide-react";
 
 export default function HeroSection() {
   const handleWhatsAppClick = () => {
-    window.open("https://wa.me/[Número]?text=Hola! Me gustaría encargar una torta", "_blank");
+    window.open("https://wa.me/5492262414148?text=Hola! Me gustaría encargar una torta", "_blank");
   };
 
   return (

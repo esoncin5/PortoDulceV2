@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 export default function WhatsAppButton() {
   const handleClick = () => {
     window.open(
-      "https://wa.me/[Número]?text=Hola! Me gustaría consultar sobre las tortas",
+      "https://wa.me/5492262414148?text=Hola! Me gustaría consultar sobre las tortas",
       "_blank"
     );
   };

@@ -27,7 +27,7 @@ export default function ContactSection() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <a
-                  href="https://wa.me/[Número]"
+                  href="https://wa.me/5492262414148"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent transition-colors group"
@@ -37,12 +37,12 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <p className="font-semibold">WhatsApp</p>
-                    <p className="text-sm text-muted-foreground">[Número]</p>
+                    <p className="text-sm text-muted-foreground">+54 9 2262 41-4148</p>
                   </div>
                 </a>
 
                 <a
-                  href="tel:[Número]"
+                  href="tel:+5492262414148"
                   className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent transition-colors group"
                 >
                   <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -50,12 +50,12 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <p className="font-semibold">Teléfono</p>
-                    <p className="text-sm text-muted-foreground">[Número]</p>
+                    <p className="text-sm text-muted-foreground">+54 9 2262 41-4148</p>
                   </div>
                 </a>
 
                 <a
-                  href="mailto:[correo]"
+                  href="mailto:portodulce@gmail.com"
                   className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent transition-colors group"
                 >
                   <div className="w-12 h-12 rounded-full bg-peach flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -63,12 +63,12 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <p className="font-semibold">Email</p>
-                    <p className="text-sm text-muted-foreground">[correo]</p>
+                    <p className="text-sm text-muted-foreground">portodulce@gmail.com</p>
                   </div>
                 </a>
 
                 <a
-                  href="https://instagram.com/[@usuario]"
+                  href="https://instagram.com/portodulce"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent transition-colors group"
@@ -78,7 +78,7 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <p className="font-semibold">Instagram</p>
-                    <p className="text-sm text-muted-foreground">[@usuario]</p>
+                    <p className="text-sm text-muted-foreground">@portodulce</p>
                   </div>
                 </a>
               </CardContent>
@@ -96,12 +96,11 @@ export default function ContactSection() {
                   <div>
                     <p className="font-semibold mb-2">Retiro en local</p>
                     <p className="text-sm text-muted-foreground mb-4">
-                      [Dirección del local]
+                      Necochea, Buenos Aires
                     </p>
                     <p className="font-semibold mb-2">Delivery disponible</p>
                     <p className="text-sm text-muted-foreground">
-                      Consultá si llegamos a tu zona. Cobertura en CABA y zona
-                      norte de GBA.
+                      Consultá si llegamos a tu zona. Cobertura en Necochea y alrededores.
                     </p>
                   </div>
                 </div>
