@@ -20,8 +20,8 @@ interface Cake {
 const cakes: Cake[] = [
   {
     id: 1,
-    name: "Torta 80 golpes",
-    description: "descripcion torta 80 golpes",
+    name: "Torta 80 Golpes",
+    description: "Un clásico irresistible de la repostería argentina. La Torta 80 Golpes combina capas suaves de bizcochuelo con un toque justo de dulzura y una textura húmeda y esponjosa. Su sabor casero y su aroma inconfundible la convierten en la elección perfecta para acompañar un café o celebrar cualquier ocasión especial.",
     price: "$15000",
     images: [
       "/images/torta80golpes8.jpg",
@@ -32,6 +32,54 @@ const cakes: Cake[] = [
       "/images/torta80golpes3.jpg",
       "/images/torta80golpes2.jpg",
       "/images/torta80golpes1.jpg",
+    ],
+  },
+
+  {
+    id: 2,
+    name: "Torta Matera Marmolada",
+    description: "Una deliciosa combinación de vainilla y cacao en un bizcochuelo esponjoso y húmedo. La Torta Matera Marmolada es ideal para acompañar el mate, el café o una merienda en familia. Su sabor equilibrado y su aspecto marmolado la convierten en un clásico infaltable en cualquier mesa.",
+    price: "$15000",
+    images: [
+      "/images/tortamateramarmolada3.jpg",
+      "/images/tortamateramarmolada2.jpg",
+      "/images/tortamateramarmolada1.jpg",
+    ],
+  },
+
+  {
+    id: 3,
+    name: "Torta Matera con Chips de Chocolate",
+    description: "Suave, esponjosa y con el toque irresistible del chocolate. Esta torta matera combina la textura casera de un bizcochuelo tradicional con deliciosos chips que se derriten en cada bocado. Perfecta para acompañar el mate, el café o disfrutar en cualquier momento del día.",
+    price: "$15000",
+    images: [
+      "/images/tortamaterachips3.jpg",
+      "/images/tortamaterachips2.jpg",
+      "/images/tortamaterachips1.jpg",
+    ],
+  },
+
+  {
+    id: 4,
+    name: "Torta Matera de Limón o Naranja",
+    description: "Fresca, esponjosa y con el aroma cítrico que enamora. Nuestra torta matera de limón o naranja ofrece un sabor suave y natural, ideal para acompañar el mate o una infusión. Un clásico casero que aporta un toque de frescura a cada merienda.",
+    price: "$15000",
+    images: [
+      "/images/tortamateralimonnaranja1.jpg",
+      "/images/tortamateralimonnaranja2.jpg",
+      "/images/tortamateralimonnaranja3.jpg",
+    ],
+  },
+
+  {
+    id: 5,
+    name: "Tortas Personalizadas",
+    description: "Convertí tus ideas en una torta única. Diseñamos tortas totalmente personalizadas para cumpleaños, aniversarios, eventos o cualquier ocasión especial. Elegí los sabores, colores y decoración que más te gusten, y nosotros nos encargamos de crear una torta deliciosa y hecha a tu medida.",
+    price: "$25000",
+    images: [
+      "/images/tortapersonalizada1.jpg",
+      "/images/tortapersonalizada2.jpg",
+      "/images/tortapersonalizada3.jpg",
     ],
   },
 ];
