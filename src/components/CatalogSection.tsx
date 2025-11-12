@@ -1,11 +1,12 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface Cake {
   id: number;
@@ -32,7 +33,6 @@ const cakes: Cake[] = [
       "/images/torta80golpes2.jpg",
       "/images/torta80golpes1.jpg",
     ],
-    popular: true,
   },
 ];
 
@@ -43,6 +43,11 @@ interface CarouselProps {
 
 function ImageCarousel({ images, cakeName }: CarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+  const isMobile = useIsMobile();
+
+  const minSwipeDistance = 50;
 
   const goToPrevious = () => {
     setCurrentIndex((prevIndex) =>
@@ -56,8 +61,36 @@ function ImageCarousel({ images, cakeName }: CarouselProps) {
     );
   };
 
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(0);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      goToNext();
+    } else if (isRightSwipe) {
+      goToPrevious();
+    }
+  };
+
   return (
-    <div className="relative overflow-hidden aspect-square group">
+    <div 
+      className="relative overflow-hidden aspect-square group"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
       <img
         src={images[currentIndex]}
         alt={`${cakeName} - imagen ${currentIndex + 1}`}
@@ -70,7 +103,9 @@ function ImageCarousel({ images, cakeName }: CarouselProps) {
             variant="ghost"
             size="icon"
             onClick={goToPrevious}
-            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+            className={`absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white transition-opacity duration-300 z-10 ${
+              isMobile ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+            }`}
           >
             <ChevronLeft className="h-5 w-5" />
           </Button>
@@ -79,7 +114,9 @@ function ImageCarousel({ images, cakeName }: CarouselProps) {
             variant="ghost"
             size="icon"
             onClick={goToNext}
-            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+            className={`absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white transition-opacity duration-300 z-10 ${
+              isMobile ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+            }`}
           >
             <ChevronRight className="h-5 w-5" />
           </Button>
