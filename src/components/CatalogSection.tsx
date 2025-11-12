@@ -23,7 +23,7 @@ const cakes: Cake[] = [
     description: "descripcion torta 80 golpes",
     price: "$15000",
     images: [
-      "/public/images/torta80golpes1",
+      "/public/images/torta80golpes8.jpg",
       "https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=600&q=80",
       "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&q=80",
       "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&q=80",
