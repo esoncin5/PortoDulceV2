@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import { Playfair_Display, Poppins } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -22,6 +21,11 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Porto Dulce - Tortas Artesanales Hechas a Mano",
   description: "Tortas artesanales personalizadas por Marina Porto para cumpleaños, eventos y ocasiones especiales. Pedidos por WhatsApp.",
+  icons: {
+    icon: "/espiral.png",
+    shortcut: "/espiral.png",
+    apple: "/espiral.png",
+  },
 };
 
 export default function RootLayout({
