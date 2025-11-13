@@ -62,7 +62,7 @@ export default function ContactSection() {
                 </a>
 
                 <a
-                  href="mailto:portodulce@gmail.com"
+                  href="mailto:portodulcenecochea@gmail.com"
                   className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent transition-colors group"
                 >
                   <div className="w-12 h-12 rounded-full bg-peach flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -70,12 +70,12 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <p className="font-semibold">Email</p>
-                    <p className="text-sm text-muted-foreground">portodulce@gmail.com</p>
+                    <p className="text-sm text-muted-foreground">portodulcenecochea@gmail.com</p>
                   </div>
                 </a>
 
                 <a
-                  href="https://instagram.com/portodulce"
+                  href="https://instagram.com/portodulcenecochea"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent transition-colors group"
