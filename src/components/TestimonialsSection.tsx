@@ -4,7 +4,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface Testimonial {
@@ -25,25 +25,14 @@ const testimonials: Testimonial[] = [
     id: 3,
     chatImage: "/images/opinion3.jpg",
   },
-  {
-    id: 4,
-    chatImage: "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=600&q=80",
-  },
-  {
-    id: 5,
-    chatImage: "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=600&q=80",
-  },
-  {
-    id: 6,
-    chatImage: "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=600&q=80",
-  },
 ];
 
 interface ChatCarouselProps {
   chatImage: string;
+  onImageClick: () => void;
 }
 
-function ChatCarousel({ chatImage }: ChatCarouselProps) {
+function ChatCarousel({ chatImage, onImageClick }: ChatCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
@@ -89,10 +78,11 @@ function ChatCarousel({ chatImage }: ChatCarouselProps) {
 
   return (
     <div
-      className="relative overflow-hidden aspect-[9/16] group bg-muted rounded-lg"
+      className="relative overflow-hidden aspect-[9/16] group bg-muted rounded-lg cursor-pointer"
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
+      onClick={onImageClick}
     >
       <img
         src={images[currentIndex]}
@@ -105,7 +95,10 @@ function ChatCarousel({ chatImage }: ChatCarouselProps) {
           <Button
             variant="ghost"
             size="icon"
-            onClick={goToPrevious}
+            onClick={(e) => {
+              e.stopPropagation();
+              goToPrevious();
+            }}
             className={`absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white transition-opacity duration-300 z-10 ${
               isMobile ? "opacity-100" : "opacity-0 group-hover:opacity-100"
             }`}
@@ -116,7 +109,10 @@ function ChatCarousel({ chatImage }: ChatCarouselProps) {
           <Button
             variant="ghost"
             size="icon"
-            onClick={goToNext}
+            onClick={(e) => {
+              e.stopPropagation();
+              goToNext();
+            }}
             className={`absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white transition-opacity duration-300 z-10 ${
               isMobile ? "opacity-100" : "opacity-0 group-hover:opacity-100"
             }`}
@@ -128,7 +124,10 @@ function ChatCarousel({ chatImage }: ChatCarouselProps) {
             {images.map((_, index) => (
               <button
                 key={index}
-                onClick={() => setCurrentIndex(index)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentIndex(index);
+                }}
                 className={`h-2 rounded-full transition-all duration-300 ${
                   index === currentIndex
                     ? "bg-white w-6"
@@ -144,7 +143,56 @@ function ChatCarousel({ chatImage }: ChatCarouselProps) {
   );
 }
 
+interface FullscreenModalProps {
+  isOpen: boolean;
+  imageUrl: string;
+  onClose: () => void;
+}
+
+function FullscreenModal({ isOpen, imageUrl, onClose }: FullscreenModalProps) {
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={onClose}
+        className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 text-white z-10"
+      >
+        <X className="h-6 w-6" />
+      </Button>
+
+      <div
+        className="relative w-full h-full flex items-center justify-center"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <img
+          src={imageUrl}
+          alt="Chat de cliente en pantalla completa"
+          className="max-w-full max-h-full object-contain"
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function TestimonialsSection() {
+  const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
+
+  const openFullscreen = (imageUrl: string) => {
+    setFullscreenImage(imageUrl);
+    document.body.style.overflow = "hidden";
+  };
+
+  const closeFullscreen = () => {
+    setFullscreenImage(null);
+    document.body.style.overflow = "unset";
+  };
+
   return (
     <section className="py-20">
       <div className="container mx-auto px-4">
@@ -163,11 +211,20 @@ export default function TestimonialsSection() {
               key={testimonial.id}
               className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
             >
-              <ChatCarousel chatImage={testimonial.chatImage} />
+              <ChatCarousel
+                chatImage={testimonial.chatImage}
+                onImageClick={() => openFullscreen(testimonial.chatImage)}
+              />
             </Card>
           ))}
         </div>
       </div>
+
+      <FullscreenModal
+        isOpen={fullscreenImage !== null}
+        imageUrl={fullscreenImage || ""}
+        onClose={closeFullscreen}
+      />
     </section>
   );
 }
