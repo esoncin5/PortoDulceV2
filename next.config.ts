@@ -38,6 +38,7 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
+    unoptimized: true, // 👈 AGREGA ESTA LÍNEA AQUÍ
     remotePatterns: [
       {
         hostname: "images.pexels.com",
