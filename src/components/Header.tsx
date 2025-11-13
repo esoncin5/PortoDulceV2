@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Menu, X, Cake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import Image from "next/image";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -51,9 +52,13 @@ export default function Header() {
             }}
             className="flex items-center gap-2 group"
           >
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-pastel to-peach flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-              <Cake className="w-6 h-6 text-white" />
-            </div>
+            <Image
+              src="/espiral.png" // El nombre de tu archivo en la carpeta /public
+              alt="Logo de Porto Dulce"
+              width={48}  // 48px (w-12)
+              height={48} // 48px (h-12)
+              className="rounded-full group-hover:scale-110 transition-transform" // Puedes quitar rounded-full si tu logo no es circular
+/>
             <span className="text-2xl font-playfair font-bold bg-gradient-to-r from-pink-pastel to-peach bg-clip-text text-transparent">
               Porto Dulce
             </span>
