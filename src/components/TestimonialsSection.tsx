@@ -1,59 +1,148 @@
 
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Star } from "lucide-react";
+import { useState } from "react";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface Testimonial {
   id: number;
-  name: string;
-  date: string;
-  rating: number;
-  comment: string;
+  chatImage: string;
 }
 
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    name: "María González",
-    date: "Hace 2 semanas",
-    rating: 5,
-    comment:
-      "¡Increíble! La torta de chocolate quedó hermosa y deliciosa. Todos en la fiesta quedaron encantados. Super recomendable.",
+    chatImage: "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=600&q=80",
   },
   {
     id: 2,
-    name: "Carlos Rodríguez",
-    date: "Hace 1 mes",
-    rating: 5,
-    comment:
-      "Pedí una torta personalizada para el cumpleaños de mi hija y superó todas mis expectativas. Excelente atención y calidad.",
+    chatImage: "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=600&q=80",
   },
   {
     id: 3,
-    name: "Laura Martínez",
-    date: "Hace 3 semanas",
-    rating: 5,
-    comment:
-      "La torta Red Velvet es mi favorita. Siempre fresca, esponjosa y con el punto justo de dulce. ¡No cambio más de lugar!",
+    chatImage: "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=600&q=80",
   },
   {
     id: 4,
-    name: "Javier López",
-    date: "Hace 1 semana",
-    rating: 5,
-    comment:
-      "Excelente servicio y puntualidad en la entrega. La torta de frutilla estaba espectacular. Volveré a pedir sin dudas.",
+    chatImage: "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=600&q=80",
   },
   {
     id: 5,
-    name: "Ana Silva",
-    date: "Hace 2 meses",
-    rating: 5,
-    comment:
-      "Hice varios pedidos y siempre perfectos. La atención por WhatsApp es rápida y te asesoran en todo. 100% recomendable.",
+    chatImage: "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=600&q=80",
+  },
+  {
+    id: 6,
+    chatImage: "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=600&q=80",
   },
 ];
+
+interface ChatCarouselProps {
+  chatImage: string;
+}
+
+function ChatCarousel({ chatImage }: ChatCarouselProps) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+  const isMobile = useIsMobile();
+
+  const images = [chatImage];
+  const minSwipeDistance = 50;
+
+  const goToPrevious = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  };
+
+  const goToNext = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(0);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      goToNext();
+    } else if (isRightSwipe) {
+      goToPrevious();
+    }
+  };
+
+  return (
+    <div
+      className="relative overflow-hidden aspect-[9/16] group bg-muted rounded-lg"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
+      <img
+        src={images[currentIndex]}
+        alt="Chat de cliente"
+        className="w-full h-full object-cover transition-opacity duration-500"
+      />
+
+      {images.length > 1 && (
+        <>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={goToPrevious}
+            className={`absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white transition-opacity duration-300 z-10 ${
+              isMobile ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+            }`}
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={goToNext}
+            className={`absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white transition-opacity duration-300 z-10 ${
+              isMobile ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+            }`}
+          >
+            <ChevronRight className="h-5 w-5" />
+          </Button>
+
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+            {images.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentIndex(index)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  index === currentIndex
+                    ? "bg-white w-6"
+                    : "bg-white/50 w-2 hover:bg-white/75"
+                }`}
+                aria-label={`Ir a imagen ${index + 1}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
 
 export default function TestimonialsSection() {
   return (
@@ -68,31 +157,13 @@ export default function TestimonialsSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {testimonials.map((testimonial) => (
             <Card
               key={testimonial.id}
-              className="hover:shadow-lg transition-shadow"
+              className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
             >
-              <CardContent className="pt-6">
-                <div className="flex items-center gap-1 mb-3">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-5 h-5 fill-yellow-400 text-yellow-400"
-                    />
-                  ))}
-                </div>
-                <p className="text-muted-foreground mb-4 italic">
-                  "{testimonial.comment}"
-                </p>
-                <div className="flex items-center justify-between">
-                  <p className="font-semibold">{testimonial.name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {testimonial.date}
-                  </p>
-                </div>
-              </CardContent>
+              <ChatCarousel chatImage={testimonial.chatImage} />
             </Card>
           ))}
         </div>
