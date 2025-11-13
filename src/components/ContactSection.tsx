@@ -85,7 +85,7 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <p className="font-semibold">Instagram</p>
-                    <p className="text-sm text-muted-foreground">@portodulce</p>
+                    <p className="text-sm text-muted-foreground">@portodulcenecochea</p>
                   </div>
                 </a>
               </CardContent>
