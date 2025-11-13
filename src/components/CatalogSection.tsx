@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface Cake {
@@ -87,9 +87,10 @@ const cakes: Cake[] = [
 interface CarouselProps {
   images: string[];
   cakeName: string;
+  onImageClick: (imageIndex: number) => void;
 }
 
-function ImageCarousel({ images, cakeName }: CarouselProps) {
+function ImageCarousel({ images, cakeName, onImageClick }: CarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
@@ -134,10 +135,11 @@ function ImageCarousel({ images, cakeName }: CarouselProps) {
 
   return (
     <div 
-      className="relative overflow-hidden aspect-square group"
+      className="relative overflow-hidden aspect-square group cursor-pointer"
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
+      onClick={() => onImageClick(currentIndex)}
     >
       <img
         src={images[currentIndex]}
@@ -150,7 +152,10 @@ function ImageCarousel({ images, cakeName }: CarouselProps) {
           <Button
             variant="ghost"
             size="icon"
-            onClick={goToPrevious}
+            onClick={(e) => {
+              e.stopPropagation();
+              goToPrevious();
+            }}
             className={`absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white transition-opacity duration-300 z-10 ${
               isMobile ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
             }`}
@@ -161,7 +166,10 @@ function ImageCarousel({ images, cakeName }: CarouselProps) {
           <Button
             variant="ghost"
             size="icon"
-            onClick={goToNext}
+            onClick={(e) => {
+              e.stopPropagation();
+              goToNext();
+            }}
             className={`absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white transition-opacity duration-300 z-10 ${
               isMobile ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
             }`}
@@ -173,7 +181,10 @@ function ImageCarousel({ images, cakeName }: CarouselProps) {
             {images.map((_, index) => (
               <button
                 key={index}
-                onClick={() => setCurrentIndex(index)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentIndex(index);
+                }}
                 className={`h-2 rounded-full transition-all duration-300 ${
                   index === currentIndex
                     ? "bg-white w-6"
@@ -189,7 +200,173 @@ function ImageCarousel({ images, cakeName }: CarouselProps) {
   );
 }
 
+interface FullscreenModalProps {
+  isOpen: boolean;
+  images: string[];
+  initialIndex: number;
+  cakeName: string;
+  onClose: () => void;
+}
+
+function FullscreenModal({ isOpen, images, initialIndex, cakeName, onClose }: FullscreenModalProps) {
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+  const isMobile = useIsMobile();
+
+  const minSwipeDistance = 50;
+
+  useEffect(() => {
+    setCurrentIndex(initialIndex);
+  }, [initialIndex]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isOpen) return;
+      
+      if (e.key === 'ArrowLeft') {
+        goToPrevious();
+      } else if (e.key === 'ArrowRight') {
+        goToNext();
+      } else if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, currentIndex]);
+
+  const goToPrevious = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  };
+
+  const goToNext = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(0);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      goToNext();
+    } else if (isRightSwipe) {
+      goToPrevious();
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
+      onClick={onClose}
+    >
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={onClose}
+        className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 text-white z-10"
+      >
+        <X className="h-6 w-6" />
+      </Button>
+
+      <div
+        className="relative w-full h-full flex items-center justify-center px-4 md:px-16"
+        onClick={(e) => e.stopPropagation()}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
+        <img
+          src={images[currentIndex]}
+          alt={`${cakeName} - imagen ${currentIndex + 1}`}
+          className="max-w-full max-h-full object-contain"
+        />
+
+        {images.length > 1 && (
+          <>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={goToPrevious}
+              className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white h-12 w-12"
+            >
+              <ChevronLeft className="h-8 w-8" />
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={goToNext}
+              className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white h-12 w-12"
+            >
+              <ChevronRight className="h-8 w-8" />
+            </Button>
+
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 bg-black/50 px-4 py-2 rounded-full">
+              {images.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentIndex(index)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    index === currentIndex
+                      ? "bg-white w-8"
+                      : "bg-white/50 w-2 hover:bg-white/75"
+                  }`}
+                  aria-label={`Ir a imagen ${index + 1}`}
+                />
+              ))}
+            </div>
+
+            <div className="absolute top-6 left-1/2 -translate-x-1/2 bg-black/50 px-4 py-2 rounded-full text-white text-sm">
+              {currentIndex + 1} / {images.length}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function CatalogSection() {
+  const [fullscreenData, setFullscreenData] = useState<{
+    images: string[];
+    initialIndex: number;
+    cakeName: string;
+  } | null>(null);
+
+  const openFullscreen = (cake: Cake, imageIndex: number) => {
+    setFullscreenData({
+      images: cake.images,
+      initialIndex: imageIndex,
+      cakeName: cake.name,
+    });
+    document.body.style.overflow = "hidden";
+  };
+
+  const closeFullscreen = () => {
+    setFullscreenData(null);
+    document.body.style.overflow = "unset";
+  };
+
   return (
     <section id="tortas" className="py-20 bg-gradient-cream">
       <div className="container mx-auto px-4">
@@ -208,7 +385,11 @@ export default function CatalogSection() {
               key={cake.id}
               className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
             >
-              <ImageCarousel images={cake.images} cakeName={cake.name} />
+              <ImageCarousel 
+                images={cake.images} 
+                cakeName={cake.name}
+                onImageClick={(imageIndex) => openFullscreen(cake, imageIndex)}
+              />
               <CardContent className="p-5">
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <h3 className="text-xl font-playfair font-semibold">
@@ -231,6 +412,16 @@ export default function CatalogSection() {
           ))}
         </div>
       </div>
+
+      {fullscreenData && (
+        <FullscreenModal
+          isOpen={true}
+          images={fullscreenData.images}
+          initialIndex={fullscreenData.initialIndex}
+          cakeName={fullscreenData.cakeName}
+          onClose={closeFullscreen}
+        />
+      )}
     </section>
   );
 }
