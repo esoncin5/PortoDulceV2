@@ -15,15 +15,15 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    chatImage: "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=600&q=80",
+    chatImage: "/images/opinion1.jpg",
   },
   {
     id: 2,
-    chatImage: "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=600&q=80",
+    chatImage: "/images/opinion2.jpg",
   },
   {
     id: 3,
-    chatImage: "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=600&q=80",
+    chatImage: "/images/opinion3.jpg",
   },
   {
     id: 4,
