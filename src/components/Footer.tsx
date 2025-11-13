@@ -1,8 +1,8 @@
-
 "use client";
 
 import Link from "next/link";
-import { Cake, Instagram, Mail } from "lucide-react";
+import { Instagram, Mail } from "lucide-react";
+import Image from "next/image";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -13,9 +13,13 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-pastel to-peach flex items-center justify-center">
-                <Cake className="w-5 h-5 text-white" />
-              </div>
+              <Image
+                src="/espiral.png"
+                alt="Logo de Porto Dulce"
+                width={40}
+                height={40}
+                className="rounded-full"
+              />
               <span className="text-xl font-playfair font-bold">
                 Porto Dulce
               </span>
