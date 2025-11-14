@@ -82,6 +82,18 @@ const cakes: Cake[] = [
       "/images/tortapersonalizada3.jpg",
     ],
   },
+
+    {
+    id: 6,
+    name: "Chocotorta Infantil (con golosinas a elección)",
+    description: "La chocotorta es un clásico irresistible: capas de galletitas de chocolate humedecidas con café, intercaladas con una suave crema de dulce de leche y queso crema. Fresca y deliciosa, es la opción perfecta para los amantes del chocolate que buscan un postre casero, práctico y lleno de sabor. Ideal para cualquier celebración o antojo dulce.",
+    price: "$20000 x kilo",
+    images: [
+      "/images/chocotorta1.jpg",
+      "/images/chocotorta2.jpg",
+      "/images/chocotorta3.jpg",
+    ],
+  },
 ];
 
 interface CarouselProps {
